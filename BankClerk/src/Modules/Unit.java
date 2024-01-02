@@ -4,29 +4,29 @@ import java.util.ArrayList;
 public class Unit {
     private String name;
     private int maxWaitingTime;
-    private double avgServiceTime;
+    private double serviceTime;
     private ArrayList<Customer> customers;
     private int clerk = 0;
     //Constructors
-    public Unit(String name, int maxWaitingTime, double avgServiceTime)
+    public Unit(String name, int maxWaitingTime, double serviceTime)
     {
         this.name = name;
         this.maxWaitingTime = maxWaitingTime;
-        this.avgServiceTime = avgServiceTime;
+        this.serviceTime = serviceTime;
         this.customers = null;
     }
     
-    public Unit(String name, int maxWaitingTime, double avgServiceTime, ArrayList<Customer> customers)
+    public Unit(String name, int maxWaitingTime, double serviceTime, ArrayList<Customer> customers)
     {
         this.name = name;
         this.maxWaitingTime = maxWaitingTime;
-        this.avgServiceTime = avgServiceTime;
+        this.serviceTime = serviceTime;
         this.customers = customers;
     }
 
-    public static Unit toParse(String name, int maxWaitingTime, double avgServiceTime)
+    public static Unit toParse(String name, int maxWaitingTime, double serviceTime)
     {
-    	Unit tempUnit = new Unit(name,maxWaitingTime,avgServiceTime);
+    	Unit tempUnit = new Unit(name,maxWaitingTime,serviceTime);
     	return tempUnit;
     }
     //GET
@@ -40,9 +40,9 @@ public class Unit {
         return this.maxWaitingTime;
     }
 
-	public double getAvgServiceTime()
+	public double getserviceTime()
     {
-        return this.avgServiceTime;
+        return this.serviceTime;
     }
 	
 	public ArrayList<Customer> getCustomers(){
@@ -58,6 +58,7 @@ public class Unit {
     	return 0;
     }
 
+    //wrong!!
     public int getTotalServiceTime() {
     	return this.maxWaitingTime * customers.size();
     }
@@ -87,10 +88,10 @@ public class Unit {
         } 
      }
 
-    public boolean setAvgServiceTime(double avgServiceTime)
+    public boolean setserviceTime(double serviceTime)
     {
         try{
-            this.avgServiceTime = avgServiceTime;
+            this.serviceTime = serviceTime;
             return true;
         }catch (Exception e)
         {
