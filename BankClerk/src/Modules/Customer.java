@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Customer {
-    private int serviceTime;
+    private int waitingTime;
     private String unit;
     private LocalTime arrivedTime;
 
@@ -19,10 +19,21 @@ public class Customer {
         this.arrivedTime = temp;
     }
 
+    public void setArrivedTime(LocalTime arrivedTime){
+        this.arrivedTime = arrivedTime;
+    }
+
     //Constructor
     public Customer( int serviceTime, String unit, String arrivedTime)
     {
-        this.serviceTime = serviceTime;
+        this.waitingTime = serviceTime;
+        this.unit = unit;
+        String arr[] = arrivedTime.split(":");
+        LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
+        this.arrivedTime = temp;
+    }
+
+    public Customer(String unit, String arrivedTime){
         this.unit = unit;
         String arr[] = arrivedTime.split(":");
         LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
@@ -34,10 +45,15 @@ public class Customer {
     	return temp;
     }
 
+    public static Customer toParse(String unit, String arrivedTime) {
+    	Customer temp = new Customer(unit, arrivedTime);
+    	return temp;
+    }
+
     //GET
-    public int getServiceTime()
+    public int getWaitingTime()
     {
-        return serviceTime;
+        return waitingTime;
     }
 
     public String getUnit()
@@ -56,10 +72,10 @@ public class Customer {
     	}
     }
    
-    public boolean setServiceTime(int serviceTime)
+    public boolean setWaitingTime(int serviceTime)
     {
     	try {
-    		this.serviceTime = serviceTime;
+    		this.waitingTime = serviceTime;
     		return true;
     	}catch(Exception e) {
         	System.err.print(e);

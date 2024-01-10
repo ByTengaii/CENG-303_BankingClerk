@@ -1,14 +1,16 @@
 package Modules;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Unit {
     private String name;
     private int maxWaitingTime;
-    private double serviceTime;
+    private int serviceTime;
     private ArrayList<Customer> customers;
     private int clerk = 0;
     //Constructors
-    public Unit(String name, int maxWaitingTime, double serviceTime)
+    public Unit(String name, int maxWaitingTime, int serviceTime)
     {
         this.name = name;
         this.maxWaitingTime = maxWaitingTime;
@@ -16,7 +18,7 @@ public class Unit {
         this.customers = null;
     }
     
-    public Unit(String name, int maxWaitingTime, double serviceTime, ArrayList<Customer> customers)
+    public Unit(String name, int maxWaitingTime, int serviceTime, ArrayList<Customer> customers)
     {
         this.name = name;
         this.maxWaitingTime = maxWaitingTime;
@@ -24,7 +26,7 @@ public class Unit {
         this.customers = customers;
     }
 
-    public static Unit toParse(String name, int maxWaitingTime, double serviceTime)
+    public static Unit toParse(String name, int maxWaitingTime, int serviceTime)
     {
     	Unit tempUnit = new Unit(name,maxWaitingTime,serviceTime);
     	return tempUnit;
@@ -40,7 +42,7 @@ public class Unit {
         return this.maxWaitingTime;
     }
 
-	public double getserviceTime()
+	public int getserviceTime()
     {
         return this.serviceTime;
     }
@@ -88,7 +90,7 @@ public class Unit {
         } 
      }
 
-    public boolean setserviceTime(double serviceTime)
+    public boolean setserviceTime(int serviceTime)
     {
         try{
             this.serviceTime = serviceTime;
@@ -121,5 +123,16 @@ public class Unit {
         	System.err.print(e);
         	return false;
         } 
-     }
+    }
+
+    public void sortCustomer(){
+        ArrayList<LocalTime> tempHour = new ArrayList<>();
+        for(int i = 0; i < customers.size(); i++){
+            tempHour.add(customers.get(i).getArrivedTime());
+        }
+        Collections.sort(tempHour);
+        for(int i = 0; i < customers.size(); i++){
+            customers.get(i).setArrivedTime(tempHour.get(i));
+        }
+    }
 }
