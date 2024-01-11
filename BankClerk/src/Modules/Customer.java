@@ -7,6 +7,15 @@ public class Customer {
     private int waitingTime;
     private String unit;
     private LocalTime arrivedTime;
+    private Boolean arrived;
+
+    public Boolean getArrived() {
+        return arrived;
+    }
+
+    public void setArrived(Boolean arrived) {
+        this.arrived = arrived;
+    }
 
     public LocalTime getArrivedTime() {
         return arrivedTime;
@@ -31,6 +40,7 @@ public class Customer {
         String arr[] = arrivedTime.split(":");
         LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
         this.arrivedTime = temp;
+        this.arrived = false;
     }
 
     public Customer(String unit, String arrivedTime){
@@ -38,6 +48,7 @@ public class Customer {
         String arr[] = arrivedTime.split(":");
         LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
         this.arrivedTime = temp;
+        this.arrived = false;
     }
     
     public static Customer toParse(int serviceTime, String unit, String arrivedTime) {

@@ -99,16 +99,16 @@ public class BankClerk {
 
 		//Calculation.calculateClerksHeuristic(shiftList);
 		Calculation.calculateClerk(shiftList);
-		
-		LocalTime time1 = LocalTime.of(11, 59);
+		/* 
+		LocalTime time1 = LocalTime.of(11, 23);
 		System.out.println("time1: "+time1);
 		LocalTime addedTime = Calculation.increaseTime(time1);
 		System.out.println("after added 1 minute: " + addedTime);
-		LocalTime time2 = LocalTime.of(9, 23);
+		LocalTime time2 = LocalTime.of(9, 50);
 		System.out.println("time2: " + time2);
 		LocalTime diffMinutesTwoTime = Calculation.diffTime(time1, time2);
 		System.out.println("difference of time1: " + time1 +" and time2: " + time2 +" = " + diffMinutesTwoTime);
-
+		*/
 
 		//Example reaching
 		//shiftList.get(0).getUnitList().get(2).getClerk(); // Taking number of morning clerks for casuals

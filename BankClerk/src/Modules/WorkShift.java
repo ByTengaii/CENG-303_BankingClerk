@@ -2,6 +2,8 @@ package Modules;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import controllers.Calculation;
+
 public class WorkShift{
 	private String name;
 	private LocalTime startTime;
@@ -56,13 +58,8 @@ public class WorkShift{
 
 	//TO-DO: Integrate service time 
 	public int getWorkMinuteTime() {
-		int hour = startTime.getHour();
-		int minutes = startTime.getMinute();
-
-		int hour2 = endTime.getHour();
-		int minutes2 = endTime.getMinute();
-
-		return ((hour2 - hour) * 60) + (minutes2 - minutes);
+		LocalTime newTime = Calculation.diffTime(endTime, startTime);
+		return (newTime.getHour() * 60) + newTime.getMinute();
 	}
 	//SET
 	public boolean setName(String name) {
