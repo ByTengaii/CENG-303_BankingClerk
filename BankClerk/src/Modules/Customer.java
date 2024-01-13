@@ -7,7 +7,53 @@ public class Customer {
     private int waitingTime;
     private String unit;
     private LocalTime arrivedTime;
+    private LocalTime startProcess;
+    private LocalTime endProcess;
     private Boolean arrived;
+    private Boolean onProcess;
+    private int howLongProcess;
+    private Boolean isOut;
+
+    public Boolean getIsOut() {
+        return isOut;
+    }
+
+    public void setIsOut(Boolean isOut) {
+        this.isOut = isOut;
+    }
+
+    public LocalTime getStartProcess() {
+        return startProcess;
+    }
+
+    public void setStartProcess(LocalTime startProcess) {
+        this.startProcess = startProcess;
+    }
+
+
+    public LocalTime getEndProcess() {
+        return endProcess;
+    }
+
+    public void setEndProcess(LocalTime endProcess) {
+        this.endProcess = endProcess;
+    }
+
+    public int getHowLongProcess() {
+        return howLongProcess;
+    }
+
+    public void setHowLongProcess(int howLongProcess) {
+        this.howLongProcess = howLongProcess;
+    }
+
+    public Boolean getOnProcess() {
+        return onProcess;
+    }
+
+    public void setOnProcess(Boolean onProcess) {
+        this.onProcess = onProcess;
+    }
 
     public Boolean getArrived() {
         return arrived;
@@ -41,6 +87,9 @@ public class Customer {
         LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
         this.arrivedTime = temp;
         this.arrived = false;
+        this.onProcess = false;
+        this.howLongProcess = 0;
+        this.isOut = false;
     }
 
     public Customer(String unit, String arrivedTime){
@@ -49,6 +98,9 @@ public class Customer {
         LocalTime temp = LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
         this.arrivedTime = temp;
         this.arrived = false;
+        this.onProcess = false;
+        this.howLongProcess = 0;
+        this.isOut = false;
     }
     
     public static Customer toParse(int serviceTime, String unit, String arrivedTime) {
@@ -111,6 +163,5 @@ public class Customer {
     		tempCustomers.add(Customer.toParse(serviceTime,unit, arrivedTime));
     	}
     	return tempCustomers;
-    }
+    }
 }
-
