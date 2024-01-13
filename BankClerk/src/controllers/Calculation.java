@@ -110,7 +110,7 @@ public class Calculation {
 			if(customerList.get(i).getArrived())
 				counter++;
 		}
-		return counter;
+		return counter;
 	}
 
 }

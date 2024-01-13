@@ -163,5 +163,5 @@ public class Customer {
     		tempCustomers.add(Customer.toParse(serviceTime,unit, arrivedTime));
     	}
     	return tempCustomers;
-    }
+    }
 }
