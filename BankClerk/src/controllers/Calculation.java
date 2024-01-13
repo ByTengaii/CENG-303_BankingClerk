@@ -40,11 +40,45 @@ public class Calculation {
 					}
 
 				}
+				for(int y = 0; y < customersForCommercial.size(); y++){
+					if(customersForCommercial.get(y).getArrived() && !customersForCommercial.get(y).getOnProcess() && !customersForCommercial.get(y).getIsOut()){
+						int howLong = calculateMinute(diffTime(currentTime,customersForCommercial.get(y).getArrivedTime()));
+						customersForCommercial.get(y).setWaitingTime(howLong);
+						if(howLong >= shifList.get(i).getUnitList().get(0).getMaxWaitingTime()){
+							if(properClerk > 0){
+								properClerk -= 1;
+								customersForCommercial.get(y).setOnProcess(true);
+								customersForCommercial.get(y).setStartProcess(currentTime);
+							}else{
+								totalClerk++;
+								customersForCommercial.get(y).setOnProcess(true);
+								customersForCommercial.get(y).setStartProcess(currentTime);
+							}
+						}
+					}else if(customersForCommercial.get(y).getArrived() && customersForCommercial.get(y).getOnProcess()){
+						int tempA = calculateMinute(diffTime(currentTime, customersForCommercial.get(y).getStartProcess())); 
+						if(tempA == shifList.get(i).getUnitList().get(0).getserviceTime()){
+							properClerk++;
+							customersForCommercial.get(y).setEndProcess(currentTime);
+							customersForCommercial.get(y).setOnProcess(false);
+							System.out.println("musterinin islemi bitti saat: " + currentTime);
+							customersForCommercial.get(y).setIsOut(true);
+						}else{
+							customersForCommercial.get(y).setHowLongProcess(tempA + 1);
+						}
+					}
+				}
 
+							
+
+				
 				currentTime = Calculation.increaseTime(currentTime);
 			}
 			System.out.println("guncel saat: " + currentTime);
 			System.out.println("bankaya gelen musteri sayisi: " + totalArrivedCustomer(customersForCommercial));
+			System.out.println("musteri kac dakikadir bekliyor: " + (customersForCommercial.get(0).getWaitingTime()));
+			System.out.println("total clerk: " + totalClerk);
+			System.out.println("proper clerk: " + properClerk);
 		}
 		
 		
@@ -76,7 +110,7 @@ public class Calculation {
 			if(customerList.get(i).getArrived())
 				counter++;
 		}
-		return counter;
+		return counter;
 	}
 
 }
