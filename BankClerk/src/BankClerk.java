@@ -12,7 +12,7 @@ public class BankClerk {
 	
 	public static void main(String[] args) {
 	
-		int[] unitServiceTime = {5,7,9};
+		int[] unitServiceTime = {25,7,9};
 		
 		//Creating Shifts
 		ArrayList<WorkShift> shiftList= new ArrayList<>();

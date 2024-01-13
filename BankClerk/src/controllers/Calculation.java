@@ -21,8 +21,8 @@ public class Calculation {
 		LocalTime diff = Calculation.diffTime(exampleTime, shifList.get(0).getStartTime());
 		int diffMinute = Calculation.calculateMinute(diff);
 		//these calculations are made for one unit !!! 
-		int totalClerk = 0; //total clerk number in unit
-		int properClerk = 0; //proper clerk number in unit
+		int totalClerk = 1; //total clerk number in unit
+		int properClerk = 1; //proper clerk number in unit
 		ArrayList<Customer> customersForCommercial = new ArrayList<>(); 
 		int a = 0;
 		for(int i = 0; i< shifList.size(); i++){
@@ -42,6 +42,11 @@ public class Calculation {
 				}
 				for(int y = 0; y < customersForCommercial.size(); y++){
 					if(customersForCommercial.get(y).getArrived() && !customersForCommercial.get(y).getOnProcess() && !customersForCommercial.get(y).getIsOut()){
+						if(properClerk > 0){
+							properClerk -= 1;
+							customersForCommercial.get(y).setOnProcess(true);
+							customersForCommercial.get(y).setStartProcess(currentTime);
+						}
 						int howLong = calculateMinute(diffTime(currentTime,customersForCommercial.get(y).getArrivedTime()));
 						customersForCommercial.get(y).setWaitingTime(howLong);
 						if(howLong >= shifList.get(i).getUnitList().get(0).getMaxWaitingTime()){
