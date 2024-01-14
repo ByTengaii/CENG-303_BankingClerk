@@ -9,23 +9,21 @@ import controllers.Calculation;// For random number generation
 
 
 public class BankClerk {
-	
+	static int randomHour;
 	public static void main(String[] args) {
 	
 		int[] unitServiceTime = {25,7,9};
 		
+		
 		//Creating Shifts
 		ArrayList<WorkShift> shiftList= new ArrayList<>();
 		shiftList.add(WorkShift.toParse("morning",LocalTime.of(8, 0), LocalTime.of(13, 0)));
-		//shiftList.add(WorkShift.toParse("afternoon",13, 18));
-		//shiftList.add(WorkShift.toParse("evening",18, 23));
+		shiftList.add(WorkShift.toParse("afternoon",LocalTime.of(13, 0), LocalTime.of(18, 0)));
+		shiftList.add(WorkShift.toParse("evening",LocalTime.of(18, 0), LocalTime.of(23, 0)));
 
 		//TimeCheck.computeTime();
 
 		Scanner scanner = new Scanner(System.in);
-
-		//System.out.print("Enter number of customers for morning shift:");
-		//int numOfCustomer = scanner.nextInt();
 
 		/*
 		 * When generating a random arrival time, 
@@ -35,6 +33,10 @@ public class BankClerk {
 		Random random = new Random();
 		int morningStart = shiftList.get(0).getStartTime().getHour();
 		int morningEnd = shiftList.get(0).getEndTime().getHour();
+		int afternoonStart = shiftList.get(1).getStartTime().getHour();
+		int afternoonEnd = shiftList.get(1).getEndTime().getHour();
+		int eveningStart = shiftList.get(2).getStartTime().getHour();
+		int eveningEnd = shiftList.get(2).getEndTime().getHour();
 		
 
 
@@ -49,13 +51,13 @@ public class BankClerk {
 			tempIntReader = scanner.nextInt();
 			unitList.add(Unit.toParse("commercial",tempIntReader, unitServiceTime[0]));
 
-			/*System.out.print("Enter Max waiting time for Loans for "+ shiftList.get(i).getName()+" shift:\n");
+			System.out.print("Enter Max waiting time for Loans for "+ shiftList.get(i).getName()+" shift:\n");
 			tempIntReader = scanner.nextInt();
 			unitList.add(Unit.toParse("loan",tempIntReader, unitServiceTime[1]));
 
 			System.out.print("Enter Max waiting time for Casuals for "+ shiftList.get(i).getName()+" shift:\n");
 			tempIntReader = scanner.nextInt();
-			unitList.add(Unit.toParse("casual",tempIntReader, unitServiceTime[2]));*/
+			unitList.add(Unit.toParse("casual",tempIntReader, unitServiceTime[2]));
 			//Getting customers of Unit
 			//for(int j = 0; j < unitList.size(); j++)
 			for(int j = 0; j < unitList.size(); j++)
@@ -66,7 +68,16 @@ public class BankClerk {
 				//int serviceTime = scanner.nextInt();
 				ArrayList<Customer> tempCustomer = new ArrayList<>();
 				for(int k = 0; k<numberOfCustomers; k++){
-					int randomHour = random.nextInt(morningEnd-morningStart)+morningStart;
+					if(i==0){
+						randomHour = random.nextInt(morningEnd-morningStart)+morningStart;
+					}
+					else if(i ==1){
+						randomHour = random.nextInt(afternoonEnd - afternoonStart)+afternoonStart;
+					}
+					else if(i == 2){
+						randomHour = random.nextInt(eveningEnd - eveningStart)+eveningStart;
+					}
+					
 					int randomMinute = random.nextInt(59);
 					String arrivedTime = Integer.toString(randomHour)+":"+Integer.toString(randomMinute); 
 					//unitList.get(j).setCustomers(Customer.createCustomers(unitList.get(j).getName(), numberOfCustomers, unitServiceTime[0], arrivedTime));
@@ -97,23 +108,7 @@ public class BankClerk {
 			System.out.println();
 		}
 
-		//Calculation.calculateClerksHeuristic(shiftList);
 		Calculation.calculateClerk(shiftList);
-		/* 
-		LocalTime time1 = LocalTime.of(11, 23);
-		System.out.println("time1: "+time1);
-		LocalTime addedTime = Calculation.increaseTime(time1);
-		System.out.println("after added 1 minute: " + addedTime);
-		LocalTime time2 = LocalTime.of(9, 50);
-		System.out.println("time2: " + time2);
-		LocalTime diffMinutesTwoTime = Calculation.diffTime(time1, time2);
-		System.out.println("difference of time1: " + time1 +" and time2: " + time2 +" = " + diffMinutesTwoTime);
-		*/
-
-		//Example reaching
-		//shiftList.get(0).getUnitList().get(2).getClerk(); // Taking number of morning clerks for casuals
 		
-		// TO-DO: Output Schema
-
 	}
 }

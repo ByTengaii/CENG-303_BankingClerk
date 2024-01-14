@@ -1,24 +1,15 @@
 package controllers;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import Modules.*;
 public class Calculation {
 	
-	// TO-DO: Integrate service time calculation.
-	public static void calculateClerksHeuristic(ArrayList<WorkShift> shiftList) {
-	    for (WorkShift shift : shiftList) {
-	        for (Unit unit : shift.getUnitList()) {
-		            int clerksForUnit = (int) Math.ceil(shift.getWorkMinuteTime()/ (unit.getTotalServiceTime()));
-		            unit.setClerk(clerksForUnit);
-	        }
-	    }
-	}
 
 	public static int calculateClerk(ArrayList<WorkShift> shifList){
-		LocalTime exampleTime = LocalTime.of(11, 20);
-		LocalTime diff = Calculation.diffTime(exampleTime, shifList.get(0).getStartTime());
+		LocalTime exampleTime = LocalTime.of(17, 20);
+		for(int u = 0; u<3;u++){
+		LocalTime diff = Calculation.diffTime(exampleTime, shifList.get(u).getStartTime());
 		int diffMinute = Calculation.calculateMinute(diff);
 		//these calculations are made for one unit !!! 
 		int totalClerk = 1; //total clerk number in unit
@@ -26,64 +17,63 @@ public class Calculation {
 		ArrayList<Customer> customersForCommercial = new ArrayList<>(); 
 		int a = 0;
 		for(int i = 0; i< shifList.size(); i++){
-			int shiftTime = shifList.get(i).getWorkMinuteTime();
-			LocalTime currentTime = shifList.get(i).getStartTime();//current time
-			customersForCommercial = shifList.get(i).getUnitList().get(0).getCustomers(); //shiftListin 0. indexi (commercial)
-			int[] customerWaiting = new int[shifList.get(i).getUnitList().get(0).getCustomers().size()];
-			System.out.println("shifttime toplam dakika: " + shiftTime);
-			//for(int j = 0; j < shiftTime; j++){
-			for(int j = 0; j < diffMinute; j++){
-				a++;
-				for(int k = 0; k < customersForCommercial.size(); k++){
-					if(calculateMinute(diffTime(customersForCommercial.get(k).getArrivedTime(), currentTime)) == 0){
-						customersForCommercial.get(k).setArrived(true);
-					}
-
-				}
-				for(int y = 0; y < customersForCommercial.size(); y++){
-					if(customersForCommercial.get(y).getArrived() && !customersForCommercial.get(y).getOnProcess() && !customersForCommercial.get(y).getIsOut()){
-						if(properClerk > 0){
-							properClerk -= 1;
-							customersForCommercial.get(y).setOnProcess(true);
-							customersForCommercial.get(y).setStartProcess(currentTime);
+			
+				int shiftTime = shifList.get(i).getWorkMinuteTime();
+				LocalTime currentTime = shifList.get(i).getStartTime();//current time
+				customersForCommercial = shifList.get(i).getUnitList().get(u).getCustomers(); //shiftListin 0. indexi (commercial)
+				int[] customerWaiting = new int[shifList.get(i).getUnitList().get(u).getCustomers().size()];
+				System.out.println("shifttime toplam dakika: " + shiftTime);
+				
+				for(int j = 0; j < diffMinute; j++){
+					a++;
+					for(int k = 0; k < customersForCommercial.size(); k++){
+						if(calculateMinute(diffTime(customersForCommercial.get(k).getArrivedTime(), currentTime)) == 0){
+							customersForCommercial.get(k).setArrived(true);
 						}
-						int howLong = calculateMinute(diffTime(currentTime,customersForCommercial.get(y).getArrivedTime()));
-						customersForCommercial.get(y).setWaitingTime(howLong);
-						if(howLong >= shifList.get(i).getUnitList().get(0).getMaxWaitingTime()){
+
+					}
+					for(int y = 0; y < customersForCommercial.size(); y++){
+						if(customersForCommercial.get(y).getArrived() && !customersForCommercial.get(y).getOnProcess() && !customersForCommercial.get(y).getIsOut()){
 							if(properClerk > 0){
 								properClerk -= 1;
 								customersForCommercial.get(y).setOnProcess(true);
 								customersForCommercial.get(y).setStartProcess(currentTime);
+							}
+							int howLong = calculateMinute(diffTime(currentTime,customersForCommercial.get(y).getArrivedTime()));
+							customersForCommercial.get(y).setWaitingTime(howLong);
+							if(howLong >= shifList.get(i).getUnitList().get(u).getMaxWaitingTime()){
+								if(properClerk > 0){
+									properClerk -= 1;
+									customersForCommercial.get(y).setOnProcess(true);
+									customersForCommercial.get(y).setStartProcess(currentTime);
+								}else{
+									totalClerk++;
+									customersForCommercial.get(y).setOnProcess(true);
+									customersForCommercial.get(y).setStartProcess(currentTime);
+								}
+							}
+						}else if(customersForCommercial.get(y).getArrived() && customersForCommercial.get(y).getOnProcess()){
+							int tempA = calculateMinute(diffTime(currentTime, customersForCommercial.get(y).getStartProcess())); 
+							if(tempA == shifList.get(i).getUnitList().get(u).getserviceTime()){
+								properClerk++;
+								customersForCommercial.get(y).setEndProcess(currentTime);
+								customersForCommercial.get(y).setOnProcess(false);
+								System.out.println("musterinin islemi bitti saat: " + currentTime);
+								customersForCommercial.get(y).setIsOut(true);
 							}else{
-								totalClerk++;
-								customersForCommercial.get(y).setOnProcess(true);
-								customersForCommercial.get(y).setStartProcess(currentTime);
+								customersForCommercial.get(y).setHowLongProcess(tempA + 1);
 							}
 						}
-					}else if(customersForCommercial.get(y).getArrived() && customersForCommercial.get(y).getOnProcess()){
-						int tempA = calculateMinute(diffTime(currentTime, customersForCommercial.get(y).getStartProcess())); 
-						if(tempA == shifList.get(i).getUnitList().get(0).getserviceTime()){
-							properClerk++;
-							customersForCommercial.get(y).setEndProcess(currentTime);
-							customersForCommercial.get(y).setOnProcess(false);
-							System.out.println("musterinin islemi bitti saat: " + currentTime);
-							customersForCommercial.get(y).setIsOut(true);
-						}else{
-							customersForCommercial.get(y).setHowLongProcess(tempA + 1);
-						}
-					}
-				}
-
-							
-
-				
+			}
+		
 				currentTime = Calculation.increaseTime(currentTime);
 			}
 			System.out.println("guncel saat: " + currentTime);
 			System.out.println("bankaya gelen musteri sayisi: " + totalArrivedCustomer(customersForCommercial));
-			System.out.println("musteri kac dakikadir bekliyor: " + (customersForCommercial.get(0).getWaitingTime()));
+			System.out.println("musteri kac dakikadir bekliyor: " + (customersForCommercial.get(u).getWaitingTime()));
 			System.out.println("total clerk: " + totalClerk);
 			System.out.println("proper clerk: " + properClerk);
+			}
 		}
 		
 		
