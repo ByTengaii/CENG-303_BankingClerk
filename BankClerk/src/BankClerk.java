@@ -10,14 +10,21 @@ import controllers.Calculation;// For random number generation
 
 public class BankClerk {
 	static int randomHour;
+	static int randomMinute;
 	public static void main(String[] args) {
 	
-		int[] unitServiceTime = {25,7,9};
+		int[] unitServiceTime = {10,10,10};
 		
+		LocalTime times[] = new LocalTime[5];
+		times[0] = LocalTime.of(8, 5);
+		times[1] = LocalTime.of(8, 8);
+		times[2] = LocalTime.of(8, 15);
+		times[3] = LocalTime.of(8, 19);
+		times[4] = LocalTime.of(8, 20);
 		
 		//Creating Shifts
 		ArrayList<WorkShift> shiftList= new ArrayList<>();
-		shiftList.add(WorkShift.toParse("morning",LocalTime.of(8, 0), LocalTime.of(13, 0)));
+		shiftList.add(WorkShift.toParse("morning",LocalTime.of(8, 0), LocalTime.of(9, 0)));
 		shiftList.add(WorkShift.toParse("afternoon",LocalTime.of(13, 0), LocalTime.of(18, 0)));
 		shiftList.add(WorkShift.toParse("evening",LocalTime.of(18, 0), LocalTime.of(23, 0)));
 
@@ -44,9 +51,8 @@ public class BankClerk {
 		waitingTimes[1] = scanner.nextInt();
 		waitingTimes[2] = scanner.nextInt();
 
-
-		//for(int i = 0; i < shiftList.size() ; i++)
-		for(int i = 0; i < shiftList.size() ; i++)
+		//shiftList.size()
+		for(int i = 0; i < 1 ; i++)
 		{
 			ArrayList<Unit> unitList = new ArrayList<>();
 
@@ -62,7 +68,8 @@ public class BankClerk {
 			numCustomer[1] = scanner.nextInt();
 			numCustomer[2] = scanner.nextInt();
 
-			for(int j = 0; j < unitList.size(); j++)
+			//unitList.size()
+			for(int j = 0; j < 1; j++)
 			{
 				int numberOfCustomers = numCustomer[j];
 				ArrayList<Customer> tempCustomer = new ArrayList<>();
@@ -76,11 +83,19 @@ public class BankClerk {
 					else if(i == 2){
 						randomHour = random.nextInt(eveningEnd - eveningStart)+eveningStart;
 					}
-					
-					int randomMinute = random.nextInt(59);
+					int hourCheck = shiftList.get(i).getEndTime().getHour();
+					if(randomHour == (hourCheck - 1)){
+						randomMinute = random.nextInt(59 - (unitList.get(j).getserviceTime() + unitList.get(j).getMaxWaitingTime()));	
+					}else{
+						randomMinute = random.nextInt(59);
+					}
+						
 					String arrivedTime = Integer.toString(randomHour)+":"+Integer.toString(randomMinute); 
+					System.out.println("arrived time: " + arrivedTime);
 					//unitList.get(j).setCustomers(Customer.createCustomers(unitList.get(j).getName(), numberOfCustomers, unitServiceTime[0], arrivedTime));
-					tempCustomer.add(Customer.toParse(unitList.get(j).getName(), arrivedTime));
+					//tempCustomer.add(Customer.toParse(unitList.get(j).getName(), arrivedTime));
+					System.out.println("benim manuel saatler:" + times[k]);
+					tempCustomer.add(Customer.toParse(unitList.get(j).getName(), times[k].toString()));
 					
 				}
 				
@@ -93,18 +108,25 @@ public class BankClerk {
 		}
 		scanner.close();
 
-		for(int i = 0; i < shiftList.size(); i++){
+		//shiftList.size()
+		for(int i = 0; i < 1; i++){
+			System.out.println("\n----------------------------");
 			System.out.println("workshift: " + shiftList.get(i).getName());
 			System.out.println("----------------------------");
-			for(int j = 0; j < shiftList.get(i).getUnitList().size(); j++){
-				System.out.println("unit name: " + shiftList.get(i).getUnitList().get(j).getName());
-				System.out.println("bu unit icin: " + shiftList.get(i).getUnitList().get(j).getCustomers().size() + " tane musteri vardir."
-				+ "bu unit icin max bekleme suresi: " + shiftList.get(i).getUnitList().get(j).getMaxWaitingTime() + 
-				" - bu unit icin servis suresi: " + shiftList.get(i).getUnitList().get(j).getserviceTime());
-				for(int k = 0; k<shiftList.get(i).getUnitList().get(j).getCustomers().size(); k++)
-					System.out.println("musterilerin varis zamani: " + shiftList.get(i).getUnitList().get(j).getCustomers().get(k).getArrivedTime() );
+			//shiftList.get(i).getUnitList().size()
+			for(int j = 0; j < 1; j++){
+				System.out.println("\nUnit Name: " + shiftList.get(i).getUnitList().get(j).getName());
+				System.out.println("Number of customer for this unit: " + shiftList.get(i).getUnitList().get(j).getCustomers().size()
+				+ "\nMax Waiting time for this unit: " + shiftList.get(i).getUnitList().get(j).getMaxWaitingTime() + 
+				"\nService time for this unit: " + shiftList.get(i).getUnitList().get(j).getserviceTime());
+				System.out.println("Arrival time of customers:");
+				for(int k = 0; k<shiftList.get(i).getUnitList().get(j).getCustomers().size(); k++){
+					//System.out.println("musterilerin varis zamani: " + shiftList.get(i).getUnitList().get(j).getCustomers().get(k).getArrivedTime() );
+					System.out.print(shiftList.get(i).getUnitList().get(j).getCustomers().get(k).getArrivedTime() + " ");
+				}
+				System.out.println("\n");	
 			}
-			System.out.println();
+			System.out.println("----------------------------");
 		}
 
 		Calculation.calculateClerk(shiftList);
