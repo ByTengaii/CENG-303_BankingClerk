@@ -38,34 +38,33 @@ public class BankClerk {
 		int eveningStart = shiftList.get(2).getStartTime().getHour();
 		int eveningEnd = shiftList.get(2).getEndTime().getHour();
 		
+		int waitingTimes[] = new int[3];		
+		System.out.println("Enter max waiting times of Commercial - Loan - Casual");
+		waitingTimes[0] = scanner.nextInt();
+		waitingTimes[1] = scanner.nextInt();
+		waitingTimes[2] = scanner.nextInt();
 
 
 		//for(int i = 0; i < shiftList.size() ; i++)
 		for(int i = 0; i < shiftList.size() ; i++)
 		{
-			int tempIntReader;
 			ArrayList<Unit> unitList = new ArrayList<>();
-			
-			//Getting Units & Max Waiting Time
-			System.out.print("Enter Max waiting time of Commercials for "+ shiftList.get(i).getName()+" shift:\n");
-			tempIntReader = scanner.nextInt();
-			unitList.add(Unit.toParse("commercial",tempIntReader, unitServiceTime[0]));
 
-			System.out.print("Enter Max waiting time for Loans for "+ shiftList.get(i).getName()+" shift:\n");
-			tempIntReader = scanner.nextInt();
-			unitList.add(Unit.toParse("loan",tempIntReader, unitServiceTime[1]));
+			unitList.add(Unit.toParse("commercial",waitingTimes[0], unitServiceTime[0]));
+			unitList.add(Unit.toParse("loan",waitingTimes[1], unitServiceTime[1]));
+			unitList.add(Unit.toParse("casual",waitingTimes[2], unitServiceTime[2]));
 
-			System.out.print("Enter Max waiting time for Casuals for "+ shiftList.get(i).getName()+" shift:\n");
-			tempIntReader = scanner.nextInt();
-			unitList.add(Unit.toParse("casual",tempIntReader, unitServiceTime[2]));
-			//Getting customers of Unit
-			//for(int j = 0; j < unitList.size(); j++)
+			int numCustomer[] = new int[3];
+
+			System.out.println("------- For " + shiftList.get(i).getName() + " ---------");
+			System.out.println("Enter number of customer for Commercial - Loan - Casual");
+			numCustomer[0] = scanner.nextInt();
+			numCustomer[1] = scanner.nextInt();
+			numCustomer[2] = scanner.nextInt();
+
 			for(int j = 0; j < unitList.size(); j++)
 			{
-				System.out.print("Enter number of customers for "+ unitList.get(j).getName()+" shift:\n");
-				int numberOfCustomers = scanner.nextInt();
-				//System.out.print("Enter service time of customers for "+ unitList.get(j).getName()+" shift:\n");
-				//int serviceTime = scanner.nextInt();
+				int numberOfCustomers = numCustomer[j];
 				ArrayList<Customer> tempCustomer = new ArrayList<>();
 				for(int k = 0; k<numberOfCustomers; k++){
 					if(i==0){
