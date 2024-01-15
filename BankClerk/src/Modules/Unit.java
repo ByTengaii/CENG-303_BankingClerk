@@ -60,11 +60,6 @@ public class Unit {
     	return 0;
     }
 
-    //wrong!!
-    public int getTotalServiceTime() {
-    	return this.maxWaitingTime * customers.size();
-    }
-    
     // SET
     public boolean setName (String name)
     {

@@ -1,14 +1,17 @@
 package Modules;
+import java.time.LocalTime;
 import java.util.ArrayList;
+
+import controllers.Calculation;
 
 public class WorkShift{
 	private String name;
-	private int startTime;
-	private int endTime;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	private ArrayList<Unit> unitList;
 
 	//Constructor
-	public WorkShift(String name, int startTime, int endTime)
+	public WorkShift(String name, LocalTime startTime, LocalTime endTime)
 	{
 		this.name = name;
 		this.startTime = startTime;
@@ -16,7 +19,7 @@ public class WorkShift{
 		this.unitList = null;
 	}
 	
-	public WorkShift(String name, int startTime, int endTime, ArrayList<Unit> unitList)
+	public WorkShift(String name, LocalTime startTime, LocalTime endTime, ArrayList<Unit> unitList)
 	{
 		this.name = name;
 		this.startTime = startTime;
@@ -24,7 +27,7 @@ public class WorkShift{
 		this.unitList = unitList;
 	}
 
-	public static WorkShift toParse(String name, int startTime, int endTime)
+	public static WorkShift toParse(String name, LocalTime startTime, LocalTime endTime)
 	{
 		WorkShift temp = new WorkShift(name, startTime, endTime);
 		return temp;
@@ -35,11 +38,11 @@ public class WorkShift{
 		return this.name;
 	}
 	
-	public int getStartTime() {
+	public LocalTime getStartTime() {
 		return this.startTime;
 	}
 	
-	public int getEndTime() {
+	public LocalTime getEndTime() {
 		return this.endTime;
 	}
 	
@@ -55,9 +58,9 @@ public class WorkShift{
 
 	//TO-DO: Integrate service time 
 	public int getWorkMinuteTime() {
-		return (this.endTime - this.startTime) * 60;
+		LocalTime newTime = Calculation.diffTime(endTime, startTime);
+		return (newTime.getHour() * 60) + newTime.getMinute();
 	}
-	
 	//SET
 	public boolean setName(String name) {
 		try {
@@ -68,7 +71,7 @@ public class WorkShift{
 			return false;
 		}
 	}
-	public boolean setStartTime(int startTime) {
+	public boolean setStartTime(LocalTime startTime) {
 		try {
 			this.startTime = startTime;
 			return true;
@@ -78,7 +81,7 @@ public class WorkShift{
 		}
 	}
 
-	public boolean setEndTime(int endTime) {
+	public boolean setEndTime(LocalTime endTime) {
 		try {
 			this.endTime = endTime;
 			return true;
